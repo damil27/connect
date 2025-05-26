@@ -1,0 +1,18 @@
+{% extends "layout.html" %} {% block content %}
+
+<a href="{% url 'create_room' %}">
+  <h1>Create a new room</h1>
+</a>
+
+{% for room in rooms %}
+<h2>@{{room.host.username}}</h2>
+<a href="{% url 'update_room' room.id %}"> Edit</a>
+<p>
+  Room ID--{{room.id}} and the room name is,<a
+    href="{% url 'room_details' room.id %}"
+  >
+    {{room.name}}
+  </a>
+</p>
+<small>{{room.topic.name}}</small>
+{%endfor%} {% endblock %}
