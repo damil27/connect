@@ -1,16 +1,36 @@
 {% extends "layout.html" %} {% block content%}
 
-<form method="POST" action="">
-  {% csrf_token %}
-  <h1>Login</h1>
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required />
+<div>
+  {% if page == 'login' %}
 
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required />
-  <input type="submit" value="submit" />
+  <form method="POST" action="">
+    {% csrf_token %}
+    <h1>Login</h1>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required />
 
-  <!-- <button type="submit">Login</button> -->
-</form>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required />
+    <input type="submit" value="submit" />
 
-{% endblock content %}
+    <!-- <button type="submit">Login</button> -->
+  </form>
+  <p>have no account? <a href="{% url 'register' %}">Register</a></p>
+</div>
+{% else %}
+<div>
+  <form method="POST" action="">
+    {% csrf_token %}
+    <h1>Register</h1>
+    <!-- <label for="username"> Username:</label>
+    <input type="text" id="username" name="username" required />
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required />
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required /> -->
+    {{ form.as_p }}
+    <input type="submit" value="register" />
+  </form>
+  <p>Already signed up? <a href="{% url 'login' %}">Register</a></p>
+</div>
+{% endif %} {% endblock content %}
