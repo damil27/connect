@@ -11,4 +11,5 @@ urlpatterns = [
     path("create_room", views.create_room, name="create_room"),  # Create room page
     path("update_room/<int:pk>", views.update_room, name="update_room"),  # Update room page
     path("delete_room/<int:pk>", views.delete_room, name="delete_room"),  # Delete room page
+    path("delete_message/<int:pk>", views.delete_message, name="delete_message"),  # Delete room page
 ]

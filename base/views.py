@@ -65,12 +65,13 @@ def room(request):
                 )
         topics =  Topic.objects.all()
         rooms_count = rooms.count()
-        context =  {'rooms': rooms, 'topics': topics, 'rooms_count': rooms_count}
+        room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
+        context =  {'rooms': rooms, 'topics': topics, 'rooms_count': rooms_count, 'room_messages':room_messages }
         return render(request,"base/room.html",context)
 
 def details(request, pk):
         room = Room.objects.get(id=pk) 
-        room_messages = room.message_set.all().order_by('-created')
+        room_messages = room.message_set.all()
         participants = room.participants.all()
         print(participants)
         if request.method == 'POST':
@@ -125,4 +126,17 @@ def delete_room(request, pk):
                 return redirect('room')
         
         return render(request, "base/delete.html", {'obj':room})
+# The above code defines a view for deleting a room in a Django application.
+
+@login_required(login_url='login')
+def delete_message(request, pk): 
+        message  =  Message.objects.get(id=pk)
+        if request.user != message.user:
+                return HttpResponse("Your are not allowed here!!")
+                
+        if request.method == 'POST':
+                message.delete()
+                return redirect('room')
+        
+        return render(request, "base/delete.html", {'obj':message})
 # The above code defines a view for deleting a room in a Django application.
