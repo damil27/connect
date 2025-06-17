@@ -78,14 +78,20 @@ def details(request, pk):
                 message = Message.objects.create(
                         user = request.user,
                         room = room,
-                        body = request.POST.get('body')
+                        body = request.POST.get('body')    
                 )
-                room.participants.add(request.user)
+                room.participants.add(request.user) 
                 return redirect('room_details', pk=room.id)
         context = {'room': room, 'room_messages': room_messages, 'participants': participants}
         return render(request,"base/details.html", context)
 # The above code defines three views for a Django application.
-
+def userProfile(request, pk):
+        user = User.objects.get(id=pk)
+        rooms = user.room_set.all()
+        room_messages = user.message_set.all()
+        topics = Topic.objects.all()
+        context = {"user":user, 'rooms': rooms, 'room_messages':room_messages, 'topics': topics}
+        return render(request, "base/profile.html", context)
 @login_required(login_url='login')
 def create_room(request): 
         form = RoomForm()
@@ -93,8 +99,9 @@ def create_room(request):
                 print("Printing POST", request.POST)
                 form = RoomForm(request.POST)
                 if form.is_valid():
-                        form.save()
-
+                        room = form.save(commit=False)
+                        room.host = request.user
+                        room.save()
                         return redirect('room')
 
         context = {'form': form}
