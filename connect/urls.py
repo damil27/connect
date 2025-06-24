@@ -23,6 +23,7 @@ def home(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls), 
-    path('', include('base.urls')),  # Add this line to include the home view
+    path('', include('base.urls')),  
+    path('api/', include('base.api.urls'))
     
 ]
